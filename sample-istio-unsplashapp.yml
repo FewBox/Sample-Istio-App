@@ -1,0 +1,65 @@
+# Service #
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-istio-unsplashapp
+  labels:
+    app: sample-istio-unsplashapp
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: sample-istio-unsplashapp
+# Deployment #
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sample-istio-unsplashapp
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sample-istio-unsplashapp
+    spec:
+      containers:
+      - name: sample-istio-unsplashapp
+        image: fewbox/sample-istio-unsplashapp:latest
+        ports:
+        - containerPort: 80
+        imagePullPolicy: IfNotPresent
+# Gateway #
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: sample-istio-unsplashapp-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+# Virtual Service#
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: sample-istio-unsplashapp
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - sample-istio-unsplashapp-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: sample-istio-unsplashapp
+        port:
+          number: 80
