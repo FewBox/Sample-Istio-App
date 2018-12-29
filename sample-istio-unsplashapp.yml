@@ -11,6 +11,7 @@ spec:
     name: http
   selector:
     app: sample-istio-unsplashapp
+---
 # Deployment #
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -28,7 +29,8 @@ spec:
         image: fewbox/sample-istio-unsplashapp:latest
         ports:
         - containerPort: 80
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
+---
 # Gateway #
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -44,6 +46,7 @@ spec:
       protocol: HTTP
     hosts:
     - "*"
+---
 # Virtual Service#
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
