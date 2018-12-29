@@ -1,3 +1,5 @@
+import { StringifyOptions } from "querystring";
+
 /** Common **/
 export interface List<T>{
     items: T[]
@@ -11,24 +13,33 @@ export interface Paging<T>{
 }
 /** Root **/
 export interface Store{
+    master: Master;
     home: Home;
+    signIn: SignIn;
     setting: Setting;
 }
-/** Page **/
+/** UI **/
+export interface Master{
+    isMessageVisiable: boolean;
+    message: Message;
+    path?: string;
+}
+export interface Message{
+    type: MessageType;
+    intlId: string;
+    content?: string;
+}
 export interface Home{
+}
+export interface SignIn{
 }
 export interface Setting{
     lang: string;
 }
-/** Entity **/
-/** Util **/
-export interface Common{
-    isLoadingVisiable: boolean;
-    isMessageVisiable: boolean;
-    message: string
-}
-/** Component **/
-export const enum ViewType{
-    Small,
-    Large
+export const enum MessageType{
+    Success,
+    Error,
+    Info,
+    Warning,
+    Loading
 }

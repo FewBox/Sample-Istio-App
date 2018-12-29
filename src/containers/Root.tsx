@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { createEpicMiddleware } from 'redux-observable';
-import App from '../containers/App';
+import App from './App';
 import rootReducer from '../reducers/rootReducer';
 import rootEpic from '../epics/rootEpic';
 

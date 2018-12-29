@@ -9,7 +9,7 @@ import { AjaxRequest, AjaxResponse } from 'rxjs/observable/dom/AjaxObservable'
   
 
 const initAjaxSetting = (ajaxSetting: AjaxSetting) : AjaxRequest  => ({
-        url: _.template('<%= host %><%= port %><%= path %>')({'host':HOST, 'port': PORT, 'path':ajaxSetting.path}),
+        url: _.template('<%= host %>:<%= port %><%= path %>')({'host':HOST, 'port': PORT, 'path':ajaxSetting.path}),
         body: ajaxSetting.body ? JSON.stringify(ajaxSetting.body) : undefined,
         crossDomain: true,
         headers: ajaxSetting.headers ? ajaxSetting.headers : HEADER,
@@ -25,6 +25,7 @@ const ajaxObservable = (ajaxSetting: AjaxSetting, store : MiddlewareAPI<Store>) 
     .do(store.dispatch)
     .switchMap(
       () => {
+        debugger;
           return Observable.ajax(initAjaxSetting(ajaxSetting));
         }
     ).map(
@@ -37,17 +38,10 @@ const ajaxObservable = (ajaxSetting: AjaxSetting, store : MiddlewareAPI<Store>) 
           return Observable.of(ajaxResponse.response);
       }
     ).catch(
-        (error: Error) => (UnknownNetworkErrorObservable(error, store))
+        (error: Error) => { 
+          return UnknownNetworkErrorObservable(error, store);}
     );
 };
-
-const ServerErrorObservable = (
-    error: any,
-    store: MiddlewareAPI<Store>
-  ): Observable<any> =>
-    Observable.of({})
-      .do(()=>{console.log('Server Error...');}
-      ).skip(1)
   
 const UnknownNetworkErrorObservable = (
     error: any,
@@ -60,7 +54,7 @@ const UnknownNetworkErrorObservable = (
       ).do(
         () => console.log(error),
       )
-      .skip(1)
+      .skip(3);
   
 
 export default ajaxObservable;

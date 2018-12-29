@@ -1,6 +1,5 @@
 import { combineEpics } from 'redux-observable';
 import homeEpic from './homeEpic';
-import { PayloadAction } from '../actions/Action';
-import { Home } from '../reducers/State';
+import signInEpic from './signInEpic';
 
-export default combineEpics(...homeEpic);
+export default combineEpics(...homeEpic, ...signInEpic);
