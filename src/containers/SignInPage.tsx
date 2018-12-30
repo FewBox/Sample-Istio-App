@@ -33,9 +33,9 @@ class SignIn extends React.Component<SignInProps, any> {
   @autobind
   signIn()
   {
-      let userName = this.usernameRef.current.value;
+      let username = this.usernameRef.current.value;
       let password = this.passwordRef.current.value;
-      this.props.signIn({userName:userName, password: password, isRememberMe: false});
+      this.props.signIn(username, password);
   }
   @autobind
   enter(e)

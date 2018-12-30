@@ -8,15 +8,16 @@ import { HOST, PORT, HEADER, METHOD, RESPONSETYPE } from '../config';
 import { AjaxRequest, AjaxResponse } from 'rxjs/observable/dom/AjaxObservable'
   
 
-const initAjaxSetting = (ajaxSetting: AjaxSetting) : AjaxRequest  => ({
-        url: _.template('<%= host %>:<%= port %><%= path %>')({'host':HOST, 'port': PORT, 'path':ajaxSetting.path}),
-        body: ajaxSetting.body ? JSON.stringify(ajaxSetting.body) : undefined,
-        crossDomain: true,
-        headers: ajaxSetting.headers ? ajaxSetting.headers : HEADER,
-        method: String(ajaxSetting.method ? ajaxSetting.method : METHOD),
-        responseType: ajaxSetting.responseType ? ajaxSetting.responseType : RESPONSETYPE,
-        withCredentials: !!ajaxSetting.withCredentials
-    }
+const initAjaxSetting = (ajaxSetting: AjaxSetting) : AjaxRequest  => (
+  {
+    url: _.template('<%= host %>:<%= port %><%= path %>')({'host':HOST, 'port': PORT, 'path':ajaxSetting.path}),
+    body: ajaxSetting.body ? JSON.stringify(ajaxSetting.body) : undefined,
+    crossDomain: true,
+    headers: ajaxSetting.headers ? ajaxSetting.headers : HEADER,
+    method: String(ajaxSetting.method ? ajaxSetting.method : METHOD),
+    responseType: ajaxSetting.responseType ? ajaxSetting.responseType : RESPONSETYPE,
+    withCredentials: !!ajaxSetting.withCredentials
+}
 );
 
 const ajaxObservable = (ajaxSetting: AjaxSetting, store : MiddlewareAPI<Store>) : Observable<any> => {
@@ -25,9 +26,9 @@ const ajaxObservable = (ajaxSetting: AjaxSetting, store : MiddlewareAPI<Store>) 
     .do(store.dispatch)
     .switchMap(
       () => {
-        debugger;
-          return Observable.ajax(initAjaxSetting(ajaxSetting));
-        }
+        var options = initAjaxSetting(ajaxSetting);
+        return Observable.ajax(options);
+      }
     ).map(
       (ajaxResponse: AjaxResponse) => {
           if(ajaxResponse.response.isSuccessful){

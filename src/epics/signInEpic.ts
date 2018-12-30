@@ -8,8 +8,8 @@ import { Store, Home } from '../reducers/State';
 import AjaxObservable from '../fetch/ajaxObservable';
 
 const signInEric =(action$: ActionsObservable<any>, store: MiddlewareAPI<Store>) => action$.ofType(ActionTypes.SIGNIN)
-.switchMap(()=>{
-    return AjaxObservable({ path: '/api/signin', method: 'POST'}, store);
+.switchMap((action)=>{
+    return AjaxObservable({ path: '/api/signin', method: 'POST', body: {username:action.username, password:action.password}}, store);
 })
 .map((response)=>{
     // Todo: return loadHomePage(response.value.payload);
