@@ -1,3 +1,4 @@
+import { PayloadAction } from './Action';
 import ActionTypes from './ActionTypes';
 
 export const beginLoading = () =>({
@@ -25,4 +26,9 @@ export const signIn = (username, password) =>({
 
 export const clearPath = ()=>({
     type: ActionTypes.CLEAR_PATH
+});
+
+export const redirect = (path)=>({
+    type: ActionTypes.REDIRECT,
+    payload: path
 });
