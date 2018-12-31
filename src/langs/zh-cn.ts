@@ -1,3 +1,6 @@
 export default {
-    'Setting.Copyright':'版权 (c) 2018'
+    'SignIn.Title':'FewBox',
+    'SignIn.SignInButton':'登录',
+    'SignIn.SwitchUser':'切换用户',
+    'Layout.Copyright':'版权 FewBox (c) 2018'
 }
