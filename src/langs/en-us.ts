@@ -5,5 +5,6 @@ export default {
     'SignIn.IsNotValid': 'The username or password is not valid!',
     'Navigation.Home': 'Home',
     'Navigation.About': 'About',
+    'Message.Loading': 'Loading...',
     'Layout.Copyright':'Copyright FewBox (c) 2018'
 }

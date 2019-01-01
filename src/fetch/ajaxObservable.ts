@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { MiddlewareAPI } from 'redux';
 import { beginLoading, endLoading, showMessage } from '../actions';
 import { AjaxSetting } from './Fetch';
-import { Store } from '../reducers/State';
+import { Store, MessageType } from '../reducers/State';
 import { HOST, PORT, HEADER, METHOD, RESPONSETYPE } from '../config';
 import { AjaxRequest, AjaxResponse } from 'rxjs/observable/dom/AjaxObservable'
   
@@ -32,11 +32,12 @@ const ajaxObservable = (ajaxSetting: AjaxSetting, store : MiddlewareAPI<Store>) 
     ).map(
       (ajaxResponse: AjaxResponse) => {
           if(ajaxResponse.response.isSuccessful){
+            return Observable.of(ajaxResponse.response);
           }
           else{
-            store.dispatch(showMessage(ajaxResponse.response.message));
+            return showMessage({content:ajaxResponse.response.errorMessage, type: MessageType.Error});
           }
-          return Observable.of(ajaxResponse.response);
+          
       }
     ).catch(
         (error: Error) => { 

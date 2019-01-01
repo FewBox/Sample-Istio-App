@@ -60,6 +60,22 @@ spec:
   http:
   - match:
     - uri:
+        prefix: /api/signin
+    route:
+    - destination:
+        host: sample-istio-auth
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: /api/photos
+    route:
+    - destination:
+        host: sample-istio-photo
+        port:
+          number: 80
+  - match:
+    - uri:
         prefix: /
     route:
     - destination:
