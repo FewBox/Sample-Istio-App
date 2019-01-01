@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import{ Link }  from  'react-router-dom';
 import { autobind } from 'core-decorators';
 import { FormattedMessage } from 'react-intl';
 import Message from '../components/Message';
 import { Store, MessageType } from '../reducers/State';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, Dropdown, Avatar, Button } from 'antd';
 const { Header, Sider, Content, Footer } = Layout;
-import { Route } from 'react-router-dom'
+import { Route, Link } from 'react-router-dom';
 import Auth from '../components/Auth';
-import { hideMessage } from '../actions';
+import { hideMessage,  } from '../actions';
 import './MasterPage.scss';
 import HomePage from './HomePage';
 
@@ -26,6 +25,7 @@ class MasterPage extends React.Component<MasterPageProps, any> {
     super(props);
     this.state = {collapsed: false};
   }
+
   @autobind
   toggle()
   {
@@ -34,6 +34,13 @@ class MasterPage extends React.Component<MasterPageProps, any> {
     });
   }
   public render() {
+    const menu = (
+      <Menu>
+        <Menu.Item>
+          <Link to="/">SignOut</Link>
+        </Menu.Item>
+      </Menu>
+    );
     return (
       <div className="masterPage">
         <Auth  />
@@ -46,33 +53,13 @@ class MasterPage extends React.Component<MasterPageProps, any> {
           <div className="logo" />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
             <Menu.Item key="1">
-              <Link to='/master/dashboard'>
-              <Icon type="dashboard" />
-              <FormattedMessage id="Navigation.Dashboard"/></Link>
+              <Link to='/master/home'>
+              <Icon type="home" />
+              <FormattedMessage id="Navigation.Home"/></Link>
             </Menu.Item>
             <Menu.Item key="2">
-              <Link to='/master/user'><Icon type="user" />
-              <FormattedMessage id="Navigation.User"/></Link>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Link to='/master/group'><Icon type="team" />
-              <FormattedMessage id="Navigation.Group"/></Link>
-            </Menu.Item>
-            <Menu.Item key="4">
-              <Link to='/master/role'><Icon type="idcard" />
-              <FormattedMessage id="Navigation.Role"/></Link>
-            </Menu.Item>
-            <Menu.Item key="5">
-              <Link to='/master/api'><Icon type="api" />
-              <FormattedMessage id="Navigation.Api"/></Link>
-            </Menu.Item>
-            <Menu.Item key="6">
-              <Link to='/master/module'><Icon type="appstore" />
-              <FormattedMessage id="Navigation.Module"/></Link>
-            </Menu.Item>
-            <Menu.Item key="7">
-              <Link to='/master/permission'><Icon type="lock" />
-              <FormattedMessage id="Navigation.Permission"/></Link>
+              <Link to='/master/about'><Icon type="info-circle" />
+              <FormattedMessage id="Navigation.About"/></Link>
             </Menu.Item>
           </Menu>
         </Sider>
@@ -83,6 +70,12 @@ class MasterPage extends React.Component<MasterPageProps, any> {
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
             />
+            <Dropdown overlay={menu}>
+              <a className="ant-dropdown-link" href="#" style={{float:'right',marginRight:'20px'}}>
+                <Avatar icon="user" style={{marginRight:'5px'}} />
+                <Icon type="down" />
+              </a>
+            </Dropdown>
           </Header>
           <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
             <Route path="/master/home" component={HomePage} />

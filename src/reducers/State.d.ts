@@ -32,6 +32,7 @@ export interface Message{
 export interface Home{
 }
 export interface SignIn{
+    isValid: boolean;
 }
 export interface Setting{
     lang: string;

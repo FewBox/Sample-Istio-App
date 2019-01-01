@@ -6,13 +6,14 @@ import 'rxjs/add/operator/mapTo';
 import ActionTypes from '../actions/ActionTypes';
 import { Store, Home } from '../reducers/State';
 import AjaxObservable from '../fetch/ajaxObservable';
+import { loadHomePage } from '../actions';
 
-const initHomeEric =(action$: ActionsObservable<any>, store: MiddlewareAPI<Store>) => action$.ofType(ActionTypes.INIT_HOME)
+const initHomeEric =(action$: ActionsObservable<any>, store: MiddlewareAPI<Store>) => action$.ofType(ActionTypes.INIT_HOMEPAGE)
 .switchMap(()=>{
-    return AjaxObservable({ path: '/api/home'}, store);
+    return AjaxObservable({ path: '/api/photos'}, store);
 })
 .map((response)=>{
-    // Todo: return loadHomePage(response.value.payload);
+    return loadHomePage(response.value.payload);
 });
 
 export default [initHomeEric];

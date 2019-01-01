@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Store, Paging, Home } from '../reducers/State';
-import { Link } from 'react-router-dom';
-import { Route } from 'react-router-dom';
+import { initHomePage } from '../actions';
 
 export interface HomePageProps {
   data: Home;
-  initHome: any
+  initHomePage: any
 }
 
 class HomePage extends React.Component<HomePageProps, any> {
+  componentDidMount(){
+    this.props.initHomePage();
+  }
   render() {
     return (
       <div>
@@ -23,6 +25,7 @@ const mapStateToProps = ({home}: Store) => ({
 });
 
 const mapDispatchToProps = {
+  initHomePage
 };
 
 

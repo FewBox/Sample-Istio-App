@@ -32,3 +32,16 @@ export const redirect = (path)=>({
     type: ActionTypes.REDIRECT,
     payload: path
 });
+
+export const showSignInErrorMessage = ()=>({
+    type: ActionTypes.SHOW_SIGNINERRORMESSAGE
+});
+
+export const initHomePage = ()=>({
+    type: ActionTypes.INIT_HOMEPAGE
+});
+
+export const loadHomePage = (payload)=>({
+    type: ActionTypes.LOAD_HOMEPAGE,
+    payload: payload
+});

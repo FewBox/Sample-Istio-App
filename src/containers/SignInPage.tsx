@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { Alert } from 'antd';
 import { autobind } from 'core-decorators';
 import Auth from '../components/Auth';
 import Message from '../components/Message';
@@ -13,7 +14,7 @@ export interface SignInProps {
     messageContent: string;
     messageType: MessageType;
     messageIntlId: string;
-    isMessageVisiable: boolean;
+    isValid: boolean;
     signIn: any;
     hideMessage: any;
     changeUserType: any;
@@ -46,7 +47,7 @@ class SignIn extends React.Component<SignInProps, any> {
     }
   }
   public render() {
-    let userNameControl;
+    let userNameControl, erorrMessageControl;
     if(this.state.isUserNameEditable)
     {
         userNameControl = <div className="form-group">
@@ -57,9 +58,11 @@ class SignIn extends React.Component<SignInProps, any> {
     {
         userNameControl = <h4>{this.props.username}</h4>;
     }
+    if(!this.props.isValid){
+        erorrMessageControl = <Alert message={<FormattedMessage id="SignIn.IsNotValid" />} type="error" />;
+    }
     return (
       <div className="signIn" onKeyDown={this.enter}>
-        <Message isVisable={this.props.isMessageVisiable} type={this.props.messageType} intlId={this.props.messageIntlId} content={this.props.messageContent} onClose={this.props.hideMessage} />
         <Auth  />
         <div className="page-lock">
             <div className="page-logo">
@@ -84,6 +87,7 @@ class SignIn extends React.Component<SignInProps, any> {
                     </form>
                 </div>
                 <div className="lock-bottom">
+                    {erorrMessageControl}
                     <FormattedMessage id="SignIn.SwitchUser" values={{username : this.props.username}} />
                 </div>
             </div>
@@ -95,11 +99,11 @@ class SignIn extends React.Component<SignInProps, any> {
 }
 
 const mapStateToProps = ( { signIn } : Store) => ({
+    isValid: signIn.isValid
 })
 
 const mapDispatchToProps = {
-    signIn,
-    hideMessage
+    signIn
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
