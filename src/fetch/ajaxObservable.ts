@@ -6,6 +6,7 @@ import { AjaxSetting } from './Fetch';
 import { Store, MessageType } from '../reducers/State';
 import { HOST, PORT, HEADER, METHOD, RESPONSETYPE } from '../config';
 import { AjaxRequest, AjaxResponse } from 'rxjs/observable/dom/AjaxObservable'
+import { isUndefined } from 'util';
   
 
 const initAjaxSetting = (ajaxSetting: AjaxSetting) : AjaxRequest  => (
@@ -31,15 +32,18 @@ const ajaxObservable = (ajaxSetting: AjaxSetting, store : MiddlewareAPI<Store>) 
       }
     ).map(
       (ajaxResponse: AjaxResponse) => {
-          if(ajaxResponse.response.isSuccessful){
+          if(ajaxResponse.response.isSuccessful==true){
+            return Observable.of(ajaxResponse.response);
+          }
+          else if(isUndefined(ajaxResponse.response.isSuccessful)){
             return Observable.of(ajaxResponse.response);
           }
           else{
             return showMessage({content:ajaxResponse.response.errorMessage, type: MessageType.Error});
           }
-          
       }
-    ).catch(
+    )
+    .catch(
         (error: Error) => { 
           return UnknownNetworkErrorObservable(error, store);}
     );

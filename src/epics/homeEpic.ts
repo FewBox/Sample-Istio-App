@@ -10,10 +10,10 @@ import { loadHomePage } from '../actions';
 
 const initHomeEric =(action$: ActionsObservable<any>, store: MiddlewareAPI<Store>) => action$.ofType(ActionTypes.INIT_HOMEPAGE)
 .switchMap(()=>{
-    return AjaxObservable({ path: '/api/photos'}, store);
+    return AjaxObservable({ path: '/api/photos', method: 'GET'}, store);
 })
 .map((response)=>{
-    return loadHomePage(response.value.payload);
+    return loadHomePage(response.value);
 });
 
 export default [initHomeEric];

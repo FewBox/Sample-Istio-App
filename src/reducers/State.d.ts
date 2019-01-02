@@ -30,6 +30,9 @@ export interface Message{
     content?: string;
 }
 export interface Home{
+    photos: Photo[];
+}
+export interface Photo{
 }
 export interface SignIn{
     isValid: boolean;

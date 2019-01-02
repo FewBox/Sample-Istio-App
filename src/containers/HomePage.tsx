@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Store, Paging, Home } from '../reducers/State';
+import { Store } from '../reducers/State';
 import { initHomePage } from '../actions';
 
 export interface HomePageProps {
-  data: Home;
+  photos: any;
   initHomePage: any
 }
 
@@ -15,13 +15,17 @@ class HomePage extends React.Component<HomePageProps, any> {
   render() {
     return (
       <div>
-        Hi FewBox
+        <div>Hi FewBox</div>
+        <div>{this.props.photos.map((photo, index) => {
+          return <img key={'photo' + index} src={photo.urls.thumb} />;  
+        })}</div>
       </div>
     );
   }
 }
 
 const mapStateToProps = ({home}: Store) => ({
+  photos: home.photos
 });
 
 const mapDispatchToProps = {
