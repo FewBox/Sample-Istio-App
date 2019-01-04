@@ -13,7 +13,7 @@ const initHomeEric =(action$: ActionsObservable<any>, store: MiddlewareAPI<Store
     return AjaxObservable({ path: '/api/photos', method: 'GET'}, store);
 })
 .map((response)=>{
-    return loadHomePage(response.value);
+    return loadHomePage(response.value.payload);
 });
 
 export default [initHomeEric];
