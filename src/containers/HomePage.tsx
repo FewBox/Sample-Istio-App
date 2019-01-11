@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Store } from '../reducers/State';
+import { Store, Photo } from '../reducers/State';
 import { initHomePage } from '../actions';
+import { Card, Avatar } from 'antd';
 
 export interface HomePageProps {
-  photos: any;
+  photos: Photo[];
   initHomePage: any
 }
 
@@ -17,7 +18,16 @@ class HomePage extends React.Component<HomePageProps, any> {
       <div>
         <div>Hi FewBox</div>
         <div>{this.props.photos.map((photo, index) => {
-          return <img key={'photo' + index} src={photo.urls.thumb} />;  
+          let card = <Card
+          hoverable
+          style={{ width: 240 }}
+          cover={<img src={photo.urls.thumb} key={'photo' + index} />}
+        >
+          {photo.reviews.map((review, index)=>{
+            return <Card.Meta avatar={<Avatar src={review.base64SvgStar} />} title={review.content} description="www.fewbox.com"/>
+          })}
+        </Card>;
+          return card;  
         })}</div>
       </div>
     );

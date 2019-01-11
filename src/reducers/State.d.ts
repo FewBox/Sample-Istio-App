@@ -33,6 +33,15 @@ export interface Home{
     photos: Photo[];
 }
 export interface Photo{
+    urls: Urls;
+    reviews: Review[];
+}
+export interface Review{
+    content: string;
+    base64SvgStar: string;
+}
+export interface Urls{
+    thumb: string;
 }
 export interface SignIn{
     isValid: boolean;
