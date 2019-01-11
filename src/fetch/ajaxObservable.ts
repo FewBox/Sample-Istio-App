@@ -46,7 +46,10 @@ const ajaxObservable = (ajaxSetting: AjaxSetting, store : MiddlewareAPI<Store>) 
     .catch(
         (error: Error) => { 
           return UnknownNetworkErrorObservable(error, store);}
-    );
+    )
+    .finally(()=>{
+      store.dispatch(endLoading());
+    });
 };
   
 const UnknownNetworkErrorObservable = (
@@ -55,11 +58,6 @@ const UnknownNetworkErrorObservable = (
   ): Observable<any> =>
     Observable.of(beginLoading())
       .do(store.dispatch)
-      .do(
-        () => {()=>{console.log('Unknown Network Error...');}}
-      ).do(
-        () => console.log(error),
-      )
       .skip(3);
   
 
