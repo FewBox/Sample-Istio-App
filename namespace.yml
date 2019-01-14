@@ -1,0 +1,7 @@
+# kubectl label namespace staging istio-injection=enabled
+# kubectl label namespace staging istio-injection-
+# kubectl apply -f <(istioctl kube-inject -f fewbox.yaml) Service & Deployment
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: staging
