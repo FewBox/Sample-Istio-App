@@ -24,7 +24,12 @@ class HomePage extends React.Component<HomePageProps, any> {
           cover={<img src={photo.urls.thumb} key={'photo' + index} />}
         >
           {photo.reviews.map((review, index)=>{
-            return <Card.Meta avatar={<Avatar src={review.base64SvgStar} />} title={review.content} description="www.fewbox.com"/>
+            if(review.base64SvgStar){
+              return <Card.Meta avatar={<Avatar src={review.base64SvgStar} />} title={review.content} description="www.fewbox.com"/>;
+            }
+            else{
+              return <Card.Meta title={review.content} description="www.fewbox.com"/>
+            }
           })}
         </Card>;
           return card;  
