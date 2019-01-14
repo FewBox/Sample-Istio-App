@@ -8,7 +8,7 @@ import { Layout, Menu, Icon, Dropdown, Avatar, Button } from 'antd';
 const { Header, Sider, Content, Footer } = Layout;
 import { Route, Link } from 'react-router-dom';
 import Auth from '../components/Auth';
-import { hideMessage,  } from '../actions';
+import { hideMessage, signOut } from '../actions';
 import './MasterPage.scss';
 import HomePage from './HomePage';
 
@@ -18,6 +18,7 @@ export interface MasterPageProps {
   messageContent: string;
   isMessageVisiable: boolean;
   hideMessage: any;
+  signOut: any;
 }
 
 class MasterPage extends React.Component<MasterPageProps, any> {
@@ -37,7 +38,7 @@ class MasterPage extends React.Component<MasterPageProps, any> {
     const menu = (
       <Menu>
         <Menu.Item>
-          <Link to="/">SignOut</Link>
+          <Link to="/" onClick={this.props.signOut} >SignOut</Link>
         </Menu.Item>
       </Menu>
     );
@@ -98,7 +99,8 @@ const mapStateToProps = ( {master} : Store) => ({
 })
 
 const mapDispatchToProps = {
-  hideMessage
+  hideMessage,
+  signOut
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MasterPage);

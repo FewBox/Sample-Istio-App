@@ -9,14 +9,21 @@ import AjaxObservable from '../fetch/ajaxObservable';
 import {redirect, showSignInErrorMessage} from '../actions';
 
 const signInEpic =(action$: ActionsObservable<any>, store: MiddlewareAPI<Store>) => action$.ofType(ActionTypes.SIGNIN)
-.switchMap((action)=>{
-    return AjaxObservable({ path: '/api/signin', method: 'POST', body: {username:action.username, password:action.password}}, store);
-})
-.map((response)=>{
-    if(response.value.isValid){
-        return redirect('/master/home');
-    }
-    return showSignInErrorMessage();
+.mergeMap((action)=>{
+    return AjaxObservable({ path: '/api/signin', method: 'POST', body: {username:action.username, password:action.password}}, store)
+    .map((response)=>{
+        if(response.value.isValid){
+            window.localStorage.setItem('enduser', action.username);
+            return redirect('/master/home');
+        }
+        return showSignInErrorMessage();
+    });
 });
 
-export default [signInEpic];
+const signOutEpic =(action$: ActionsObservable<any>, store: MiddlewareAPI<Store>) => action$.ofType(ActionTypes.SIGNOUT)
+.switchMap((action)=>{
+    window.localStorage.removeItem('enduser');
+    return Observable.of();
+});
+
+export default [signInEpic, signOutEpic];

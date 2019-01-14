@@ -24,6 +24,10 @@ export const signIn = (username, password) =>({
     password: password
 });
 
+export const signOut = () => ({
+    type: ActionTypes.SIGNOUT
+});
+
 export const clearPath = ()=>({
     type: ActionTypes.CLEAR_PATH
 });

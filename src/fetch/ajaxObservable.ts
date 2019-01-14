@@ -9,17 +9,17 @@ import { AjaxRequest, AjaxResponse } from 'rxjs/observable/dom/AjaxObservable'
 import { isUndefined } from 'util';
   
 
-const initAjaxSetting = (ajaxSetting: AjaxSetting) : AjaxRequest  => (
-  {
+const initAjaxSetting = (ajaxSetting: AjaxSetting) : AjaxRequest  => {
+  return {
     url: _.template('<%= host %>:<%= port %><%= path %>')({'host':HOST, 'port': PORT, 'path':ajaxSetting.path}),
     body: ajaxSetting.body ? JSON.stringify(ajaxSetting.body) : undefined,
     crossDomain: true,
-    headers: ajaxSetting.headers ? ajaxSetting.headers : HEADER,
+    headers: {...(ajaxSetting.headers ? ajaxSetting.headers : HEADER), EndUser: window.localStorage.getItem('enduser')},
     method: String(ajaxSetting.method ? ajaxSetting.method : METHOD),
     responseType: ajaxSetting.responseType ? ajaxSetting.responseType : RESPONSETYPE,
     withCredentials: !!ajaxSetting.withCredentials
-}
-);
+  }
+};
 
 const ajaxObservable = (ajaxSetting: AjaxSetting, store : MiddlewareAPI<Store>) : Observable<any> => {
     return Observable
