@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Store, Photo } from '../reducers/State';
 import { initHomePage } from '../actions';
-import { Card, Avatar } from 'antd';
+import { Card, Avatar, Icon } from 'antd';
 
 export interface HomePageProps {
   photos: Photo[];
@@ -12,6 +12,20 @@ export interface HomePageProps {
 class HomePage extends React.Component<HomePageProps, any> {
   componentDidMount(){
     this.props.initHomePage();
+  }
+  generateStarList(count)
+  {
+    let starList = [];
+    for(var index = 1; index <= 5; index++)
+    {
+      if(index <= count){
+        starList.push(<Icon key={"Icon" + index} type="star" theme="filled" />);
+      }
+      else{
+        starList.push(<Icon key={"Icon" + index} type="star" />);
+      }
+    }
+    return <div>{starList}</div>;
   }
   render() {
     return (
@@ -24,11 +38,21 @@ class HomePage extends React.Component<HomePageProps, any> {
           cover={<img src={photo.urls.thumb} key={'photo' + index} />}
         >
           {photo.reviews.map((review, index)=>{
-            if(review.base64SvgStar){
-              return <Card.Meta avatar={<Avatar src={review.base64SvgStar} />} title={review.content} description="www.fewbox.com"/>;
+            if(review.base64SvgAvatar){
+              if(review.star){
+                return <Card.Meta  key={'review' + index} avatar={<Avatar src={review.base64SvgAvatar} />} title={review.content} description={this.generateStarList(review.star)} />;
+              }
+              else{
+                return <Card.Meta key={'review' + index} avatar={<Avatar src={review.base64SvgAvatar} />} title={review.content} />;
+              }
             }
             else{
-              return <Card.Meta title={review.content} description="www.fewbox.com"/>
+              if(review.star){
+                return <Card.Meta key={'review' + index} title={review.content} description={this.generateStarList(review.star)} />
+              }
+              else{
+                return <Card.Meta key={'review' + index} title={review.content} />
+              }
             }
           })}
         </Card>;

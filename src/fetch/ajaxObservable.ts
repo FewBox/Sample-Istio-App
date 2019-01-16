@@ -14,7 +14,7 @@ const initAjaxSetting = (ajaxSetting: AjaxSetting) : AjaxRequest  => {
     url: _.template('<%= host %>:<%= port %><%= path %>')({'host':HOST, 'port': PORT, 'path':ajaxSetting.path}),
     body: ajaxSetting.body ? JSON.stringify(ajaxSetting.body) : undefined,
     crossDomain: true,
-    headers: {...(ajaxSetting.headers ? ajaxSetting.headers : HEADER), EndUser: window.localStorage.getItem('enduser')},
+    headers: {...(ajaxSetting.headers ? ajaxSetting.headers : HEADER), enduser: window.localStorage.getItem('enduser')},
     method: String(ajaxSetting.method ? ajaxSetting.method : METHOD),
     responseType: ajaxSetting.responseType ? ajaxSetting.responseType : RESPONSETYPE,
     withCredentials: !!ajaxSetting.withCredentials

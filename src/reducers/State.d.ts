@@ -38,7 +38,8 @@ export interface Photo{
 }
 export interface Review{
     content: string;
-    base64SvgStar: string;
+    base64SvgAvatar: string;
+    star: number;
 }
 export interface Urls{
     thumb: string;
