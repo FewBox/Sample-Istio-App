@@ -31,7 +31,9 @@ spec:
         - containerPort: 80
         imagePullPolicy: Always
 ---
-# Gateway #
+# Gateway                                          #
+# proxy_set_header Host www.fewbox.com; // $host   #
+# proxy_set_header X-Forwarded-For $remote_addr;   #
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
@@ -54,7 +56,7 @@ metadata:
   name: sample-istio-unsplashapp
 spec:
   hosts:
-  - "*"
+  - "www.fewbox.com"
   gateways:
   - sample-istio-unsplashapp-gateway
   http:
