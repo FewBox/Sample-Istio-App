@@ -30,13 +30,8 @@ class HomePage extends React.Component<HomePageProps, any> {
   render() {
     return (
       <div>
-        <div>Hi FewBox</div>
         <div>{this.props.photos.map((photo, index) => {
-          let card = <Card
-          hoverable
-          style={{ width: 240 }}
-          cover={<img src={photo.urls.thumb} key={'photo' + index} />}
-        >
+          let card = <Card hoverable style={{ width: 240 }} cover={<img src={photo.urls.thumb} />} key={'photo' + index} loading={this.props.photos.length==0} >
           {photo.reviews.map((review, index)=>{
             if(review.base64SvgAvatar){
               if(review.star){

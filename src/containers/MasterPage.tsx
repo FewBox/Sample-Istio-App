@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { FormattedMessage } from 'react-intl';
@@ -6,11 +7,12 @@ import Message from '../components/Message';
 import { Store, MessageType } from '../reducers/State';
 import { Layout, Menu, Icon, Dropdown, Avatar, Button } from 'antd';
 const { Header, Sider, Content, Footer } = Layout;
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Switch } from 'react-router-dom';
 import Auth from '../components/Auth';
 import { hideMessage, signOut } from '../actions';
 import './MasterPage.scss';
-import HomePage from './HomePage';
+//import HomePage from './HomePage';
+const HomePage = lazy(() => import('./HomePage'));
 
 export interface MasterPageProps {
   messageType: MessageType;
@@ -79,7 +81,11 @@ class MasterPage extends React.Component<MasterPageProps, any> {
             </Dropdown>
           </Header>
           <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
-            <Route path="/master/home" component={HomePage} />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Switch>
+                <Route path="/master/home" render={props => <HomePage {...props} />} />
+              </Switch>
+            </Suspense>
           </Content>
           <Footer><FormattedMessage id="Layout.Copyright"/></Footer>
         </Layout>
