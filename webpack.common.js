@@ -3,6 +3,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+// the path(s) that should be cleaned
+let pathsToClean = [
+  path.resolve(__dirname, 'dist/release')
+];
+
+// the clean options to use
+let cleanOptions = {
+  exclude:  ['shared.js'],
+  verbose:  true,
+  dry:      false
+};
+
 const config = {
   target: 'web',
   entry: path.resolve(__dirname, 'src/index.tsx'),
@@ -35,7 +47,7 @@ const config = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin(pathsToClean, cleanOptions),
     new CopyWebpackPlugin([
       { from: './assets' , to: './assets' }
     ]),
