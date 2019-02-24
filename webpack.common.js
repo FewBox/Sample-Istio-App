@@ -2,9 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const devMode = process.env.NODE_ENV !== 'production';
-const srcPath = path.resolve(__dirname, './src')
 
 const config = {
   target: 'web',
@@ -35,19 +32,6 @@ const config = {
       { test: /\.tsx$/, use: 'ts-loader'},
       { test: /\.(png|jpg|gif|eot|ttf|woff|woff2|ico)$/, use: 'url-loader'},
       { test: /\.svg$/, use: ['svg-inline-loader']},
-      {
-        test: /\.css$/,
-        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
-      },
-      { test: /\.(sa|sc)ss$/,
-        include: srcPath,
-        use: [
-          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader',
-          'sass-loader',
-        ]
-      }
     ]
   },
   plugins: [
@@ -55,13 +39,7 @@ const config = {
     new CopyWebpackPlugin([
       { from: './assets' , to: './assets' }
     ]),
-    new HtmlWebpackPlugin({template: './src/index.tmpl.html',title: 'FewBox'}),
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: devMode ? '[name].css' : '[name].[hash].css',
-      chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
-    })
+    new HtmlWebpackPlugin({template: './src/index.tmpl.html',title: 'FewBox'})
   ]
 }
 module.exports = config;

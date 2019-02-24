@@ -4,9 +4,9 @@
   "description": "FewBox App.",
   "main": "index.js",
   "scripts": {
-    "demo": "webpack --optimize-minimize --config webpack.demo.js",
+    "demo": "webpack --config webpack.demo.js",
     "dev": "webpack --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js --optimize-minimize",
+    "build": "webpack --config webpack.prod.js",
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -48,7 +48,6 @@
     "copy-webpack-plugin": "^4.4.2",
     "css-loader": "^0.28.10",
     "cssnano": "^4.1.10",
-    "extract-text-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^3.0.4",
     "json-loader": "^0.5.7",
     "mini-css-extract-plugin": "^0.5.0",
