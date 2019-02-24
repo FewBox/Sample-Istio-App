@@ -8,6 +8,7 @@ import langs from '../langs';
 import SignInPage from './SignInPage';
 import MasterPage from './MasterPage';
 import { Store } from '../reducers/State';
+import "./App.css";
 
 export interface AppProps {
   lang : string,
