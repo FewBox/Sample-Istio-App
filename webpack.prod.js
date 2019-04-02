@@ -13,13 +13,30 @@ module.exports = merge(common, {
             test: /\.css$/,
             use: [MiniCssExtractPlugin.loader, 'css-loader']
           },
-          { test: /\.(sa|sc)ss$/,
+          { 
+            test: /\.(sa|sc)ss$/,
             use: [
               MiniCssExtractPlugin.loader,
               'css-loader',
               'postcss-loader',
               'sass-loader',
             ]
+          },
+          {
+            test: /\.less$/,
+            use: [
+              {
+                loader: 'style-loader',
+              }, {
+                loader: 'css-loader', // translates CSS into CommonJS
+              },
+              {
+                loader: 'less-loader',
+                options: {
+                  "modifyVars":{ "primary-color": "#1DA57A", 'border-radius-base': '2px' },
+                  javascriptEnabled: true
+                }
+              }],
           }
         ]
     },

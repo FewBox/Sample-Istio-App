@@ -8,7 +8,8 @@ import langs from '../langs';
 import SignInPage from './SignInPage';
 import MasterPage from './MasterPage';
 import { Store } from '../reducers/State';
-import "antd/dist/antd.css";
+//import "antd/dist/antd.css";
+import "antd/dist/antd.less";
 
 export interface AppProps {
   lang : string,
