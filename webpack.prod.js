@@ -25,9 +25,8 @@ module.exports = merge(common, {
           {
             test: /\.less$/,
             use: [
+              MiniCssExtractPlugin.loader,
               {
-                loader: 'style-loader',
-              }, {
                 loader: 'css-loader', // translates CSS into CommonJS
               },
               {

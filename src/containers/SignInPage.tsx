@@ -1,97 +1,118 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Alert } from 'antd';
+import { Alert, Row, Col, Input, Button, Form, Icon, Checkbox } from 'antd';
 import { autobind } from 'core-decorators';
 import Auth from '../components/Auth';
-import Message from '../components/Message';
 import './SignInPage.scss';
-import { Store, MessageType } from '../reducers/State';
-import { signIn, hideMessage } from '../actions';
+import { Store } from '../reducers/State';
+import { signIn } from '../actions';
 
 export interface SignInProps {
+    form: any;
     username: string;
-    messageContent: string;
-    messageType: MessageType;
-    messageIntlId: string;
     isValid: boolean;
     signIn: any;
-    hideMessage: any;
     changeUserType: any;
 }
 
+function hasErrors(fieldsError) {
+    return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
+
 class SignIn extends React.Component<SignInProps, any> {
-  private usernameRef: React.RefObject<HTMLInputElement>;
-  private passwordRef: React.RefObject<HTMLInputElement>;
-  private signInRef: React.RefObject<HTMLInputElement>;
   constructor(props)
   {
       super(props);
-      this.usernameRef = React.createRef();
-      this.passwordRef = React.createRef();
-      this.state = { isUserNameEditable: true };
+      this.props.form.validateFields();
   }
   @autobind
-  signIn()
+  signIn(e)
   {
-      let username = this.usernameRef.current.value;
-      let password = this.passwordRef.current.value;
-      this.props.signIn(username, password);
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.props.signIn(values.userName, values.password);
+      }
+    });
   }
   @autobind
   enter(e)
   {
     if(e.keyCode==13 || e.key=='Enter')
     {
-        this.signIn();
+        this.signIn(e);
     }
   }
   public render() {
-    let userNameControl, erorrMessageControl;
-    if(this.state.isUserNameEditable)
-    {
-        userNameControl = <div className="form-group">
-                            <input ref={this.usernameRef} className="form-control placeholder-no-fix" type="text" placeholder="Username" name="username" />
-                        </div>;
-    }
-    else
-    {
-        userNameControl = <h4>{this.props.username}</h4>;
-    }
+    let erorrMessageControl;
     if(!this.props.isValid){
         erorrMessageControl = <Alert message={<FormattedMessage id="SignIn.IsNotValid" />} type="error" />;
     }
+    const {
+        getFieldDecorator, getFieldsError, getFieldError, isFieldTouched,
+      } = this.props.form;
+    const userNameError = isFieldTouched('userName') && getFieldError('userName');
+    const passwordError = isFieldTouched('password') && getFieldError('password');
     return (
       <div className="signIn" onKeyDown={this.enter}>
         <Auth  />
-        <div className="page-lock">
-            <div className="page-logo">
-                <a className="brand" href="index.html">
-                    <img src="../../assets/images/logo.png" alt="logo" />
-                </a>
-            </div>
-            <div className="page-body">
-                <div className="lock-head"><FormattedMessage id="SignIn.Title"/></div>
-                <div className="lock-body">
-                    <div className="pull-left lock-avatar-block">
-                        <img src="../../assets/images/default-avatar.png" className="lock-avatar" />
+        <div>
+            <Row>
+                <Col span={8}>
+                    <div><FormattedMessage id="SignIn.Title"/></div>
+                    <div>
+                        <Form onSubmit={this.signIn} className="login-form">
+                            <Form.Item
+                                validateStatus={userNameError ? 'error' : ''}
+                                help={userNameError || ''}
+                            >
+                                {getFieldDecorator('userName', {
+                                rules: [{ required: true, message: 'Please input your username!' }],
+                                })(
+                                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                                )}
+                            </Form.Item>
+                            <Form.Item
+                                validateStatus={passwordError ? 'error' : ''}
+                                help={passwordError || ''}
+                                >
+                                {getFieldDecorator('password', {
+                                    rules: [{ required: true, message: 'Please input your Password!' }],
+                                })(
+                                    <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+                                )}
+                            </Form.Item>
+                            <Form.Item>
+                                {erorrMessageControl}
+                                {getFieldDecorator('remember', {
+                                    valuePropName: 'checked',
+                                    initialValue: true,
+                                })(
+                                    <Checkbox>Remember me</Checkbox>
+                                )}
+                                <a className="login-form-forgot" href="">Forgot password</a>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    className="login-form-button"
+                                    disabled={hasErrors(getFieldsError())}
+                                >
+                                    <FormattedMessage id="SignIn.SignInButton" />
+                                </Button>
+                                Or <a href="">register now!</a>
+                            </Form.Item>
+                        </Form>
                     </div>
-                    <form className="pull-left lock-form">
-                        {userNameControl}
-                        <div className="form-group">
-                            <input ref={this.passwordRef} className="form-control placeholder-no-fix" type="password" placeholder="Password" name="password" />
-                        </div>
-                        <div className="form-actions">
-                            <button type="button" className="btn red uppercase" onClick={this.signIn}><FormattedMessage id="SignIn.SignInButton" /></button>
-                        </div>
-                    </form>
-                </div>
-                <div className="lock-bottom">
-                    {erorrMessageControl}
-                    <FormattedMessage id="SignIn.SwitchUser" values={{username : this.props.username}} />
-                </div>
-            </div>
-            <div className="page-footer-custom"><FormattedMessage id="Layout.Copyright"/></div>
+                    <div>
+                        <FormattedMessage id="SignIn.SwitchUser" values={{username : this.props.username}} />}
+                    </div>
+                </Col>
+                <Col span={16}></Col>
+            </Row>
+            <Row>
+                <Col span={24}><div className="footer"><FormattedMessage id="Layout.Copyright" /></div></Col>
+            </Row>
         </div>
       </div>
     );
@@ -106,4 +127,4 @@ const mapDispatchToProps = {
     signIn
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(SignIn));

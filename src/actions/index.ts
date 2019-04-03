@@ -1,6 +1,11 @@
 import { PayloadAction } from './Action';
 import ActionTypes from './ActionTypes';
 
+export const changeLanguage = (lang) =>({
+    type: ActionTypes.CHANGE_LANGUAGE,
+    meta: lang
+});
+
 export const beginLoading = () =>({
     type: ActionTypes.BEGIN_LOADING
 });
