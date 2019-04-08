@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Alert, Row, Col, Input, Button, Form, Icon, Checkbox } from 'antd';
+import { Alert, Row, Col, Input, Button, Form, Icon, Checkbox, Layout } from 'antd';
 import { autobind } from 'core-decorators';
 import Auth from '../components/Auth';
 import './SignInPage.scss';
@@ -24,7 +24,10 @@ class SignIn extends React.Component<SignInProps, any> {
   constructor(props)
   {
       super(props);
-      this.props.form.validateFields();
+  }
+  componentDidMount()
+  {
+    this.props.form.validateFields();
   }
   @autobind
   signIn(e)
@@ -55,7 +58,7 @@ class SignIn extends React.Component<SignInProps, any> {
     const userNameError = isFieldTouched('userName') && getFieldError('userName');
     const passwordError = isFieldTouched('password') && getFieldError('password');
     return (
-      <div className="signIn" onKeyDown={this.enter}>
+      <div className="signInPage" onKeyDown={this.enter}>
         <Auth  />
         <div>
             <Row>
@@ -110,9 +113,7 @@ class SignIn extends React.Component<SignInProps, any> {
                 </Col>
                 <Col span={16}></Col>
             </Row>
-            <Row>
-                <Col span={24}><div className="footer"><FormattedMessage id="Layout.Copyright" /></div></Col>
-            </Row>
+            <FormattedMessage id="Layout.Copyright" />
         </div>
       </div>
     );
